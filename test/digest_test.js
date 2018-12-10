@@ -5,7 +5,7 @@ var _ = require('lodash')
 
 function testDigest(cfg) {
   var config = _.pick(cfg, ['url', 'method', 'data', 'headers'])
-  return md5(JSON.stringify(config))
+  return digest(config)
 }
 
 describe('Digest', function() {
@@ -16,7 +16,7 @@ describe('Digest', function() {
       method: 'get',
       data: {},
       headers: {
-        'user-agent': 'test'
+        'user-agent': 'test',
       },
       extraProperty: 'bla',
       somethingElse: 'irrelevant'
