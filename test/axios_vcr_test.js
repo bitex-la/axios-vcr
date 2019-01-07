@@ -75,6 +75,28 @@ describe('Axios VCR', function() {
         })
       })
     })
+
+    it('does not keep failed requests', function(done) {
+      var path = './test/fixtures/failed.json'
+      VCR.mountCassette(path)
+
+      axios.get('https://some.unexistent.url.com').then(function(response) {
+        done('failed')
+      }).catch(function(e){
+        fs.existsSync(path) ? done('failed') : done()
+      })
+    })
+
+    it('does keep failed requests if specifically requested', function(done) {
+      var path = './test/fixtures/failed.json'
+      VCR.mountCassette(path, true)
+
+      axios.get('https://some.unexistent.url.com').then(function(response) {
+        done('failed')
+      }).catch(function(e){
+        fs.existsSync(path) ? done() : done('failed')
+      })
+    })
   })
 
   describe('replaying', function() {
